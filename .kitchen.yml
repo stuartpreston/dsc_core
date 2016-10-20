@@ -1,6 +1,11 @@
 ---
 driver:
-  name: vagrant
+  name: azurerm
+
+driver_config:
+  subscription_id: 'b6e7eee9-e4cd-41ae-8432-03ab624df016'
+  location: 'West Europe'
+  machine_size: 'Standard_F2'
 
 provisioner:
   name: chef_zero
@@ -9,14 +14,62 @@ verifier:
   name: inspec
 
 platforms:
-  - name: ubuntu-16.04
-  - name: centos-7.2
+  - name: windows2016
+    driver_config:
+      image_urn: MicrosoftWindowsServer:WindowsServer:2016-Datacenter:latest
+    transport:
+      name: winrm
+
+  - name: windowsnano
+    driver_config:
+      image_urn: MicrosoftWindowsServer:WindowsServer:2016-Nano-Server:latest
+    transport:
+      name: winrm
+    provisioner:
+      install_msi_url: https://s3-us-west-2.amazonaws.com/nano-chef-client/chef-12.14.60.appx
+
+  - name: ubuntu1404
+    driver_config:
+      image_urn: Canonical:UbuntuServer:14.04.4-LTS:latest
+    transport:
+      ssh_key: ~/.ssh/id_kitchen-azurerm
 
 suites:
   - name: default
     run_list:
-      - recipe[dsclinux::default]
-    verifier:
-      inspec_tests:
-        - test/recipes
-    attributes:
+      - recipe[dsc_core::default]
+
+# # Libcurl issue
+#   - name: debian7
+#     driver_config:
+#       image_urn: credativ:Debian:8:latest
+#     transport:
+#       ssh_key: ~/.ssh/id_kitchen-azurerm
+
+# # Unable to load static compiled DLL correctly
+#   - name: redhat7                                      
+#     driver_config:                                           
+#       image_urn: redhat:RHEL:7.2:latest
+#     transport:
+#       ssh_key: ~/.ssh/id_kitchen-azurerm
+
+# # Unable to load static compiled DLL correctly
+#   - name: centos
+#     driver_config:                                           
+#       image_urn: OpenLogic:Centos:7.1:latest       
+#     transport:
+#       ssh_key: ~/.ssh/id_kitchen-azurerm      
+
+# # Untested
+#   - name: oracle7
+#     driver_config:
+#       image_urn: Oracle:Oracle-Linux:7.2:latest
+#     transport:
+#       ssh_key: ~/.ssh/id_kitchen-azurerm
+
+# # Untested
+#   - name: suse12
+#     driver_config:
+#       image_urn: SUSE:SLES:12-SP1:latest
+#     transport:
+#       ssh_key: ~/.ssh/id_kitchen-azurerm
