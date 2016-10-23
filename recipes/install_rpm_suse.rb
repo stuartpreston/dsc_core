@@ -7,7 +7,7 @@ remote_file '/tmp/omi-1.1.0.ssl_100.x64.rpm' do
   mode 0700
 end
 
-yum_package 'omi' do
+rpm_package 'omi' do
   source '/tmp/omi-1.1.0.ssl_100.x64.rpm'
   action :install
 end
@@ -19,7 +19,7 @@ remote_file '/tmp/dsc-1.1.1-294.ssl_100.x64.rpm' do
   mode 0700
 end
 
-yum_package 'dsc' do
+rpm_package 'dsc' do
   source '/tmp/dsc-1.1.1-294.ssl_100.x64.rpm'
   action :install
 end
@@ -31,7 +31,7 @@ remote_file '/tmp/powershell-6.0.0_alpha.11-1.el7.centos.x86_64.rpm' do
   mode 0700
 end
 
-yum_package 'powershell' do
+rpm_package 'powershell' do
   source '/tmp/powershell-6.0.0_alpha.11-1.el7.centos.x86_64.rpm'
   action :install
 end

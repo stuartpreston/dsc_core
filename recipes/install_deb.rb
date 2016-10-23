@@ -14,6 +14,10 @@ end
 
 # Install DSC
 
+apt_package %w(libunwind8 libicu52 curl libcurl3) do
+  action :install
+end
+
 remote_file '/tmp/dsc-1.1.1-294.ssl_100.x64.deb' do
   source 'https://github.com/Microsoft/PowerShell-DSC-for-Linux/releases/download/v1.1.1-294/dsc-1.1.1-294.ssl_100.x64.deb'
   mode 0700
@@ -31,11 +35,17 @@ remote_file '/tmp/powershell_6.0.0-alpha.11-1ubuntu1.14.04.1_amd64.deb' do
   mode 0700
 end
 
-apt_package %w(libunwind8 libicu52) do
-  action :install
-end
-
 dpkg_package 'powershell' do
   source '/tmp/powershell_6.0.0-alpha.11-1ubuntu1.14.04.1_amd64.deb'
   action :install
+end
+
+execute 'remove local libmi.so' do
+  command 'sudo rm -f /opt/microsoft/powershell/6.0.0-alpha.11/libmi.so'
+  action :run
+end
+
+execute 'link OMI libmi.so to PowerShell location' do
+  command 'sudo ln -s /opt/omi/lib/libmi.so /opt/microsoft/powershell/6.0.0-alpha.11/libmi.so'
+  action :run
 end

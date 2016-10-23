@@ -14,19 +14,19 @@ verifier:
   name: inspec
 
 platforms:
-  - name: windows2016
-    driver_config:
-      image_urn: MicrosoftWindowsServer:WindowsServer:2016-Datacenter:latest
-    transport:
-      name: winrm
+  # - name: windows2016
+  #   driver_config:
+  #     image_urn: MicrosoftWindowsServer:WindowsServer:2016-Datacenter:latest
+  #   transport:
+  #     name: winrm
 
-  - name: windowsnano
-    driver_config:
-      image_urn: MicrosoftWindowsServer:WindowsServer:2016-Nano-Server:latest
-    transport:
-      name: winrm
-    provisioner:
-      install_msi_url: https://s3-us-west-2.amazonaws.com/nano-chef-client/chef-12.14.60.appx
+  # - name: windowsnano
+  #   driver_config:
+  #     image_urn: MicrosoftWindowsServer:WindowsServer:2016-Nano-Server:latest
+  #   transport:
+  #     name: winrm
+  #   provisioner:
+  #     install_msi_url: https://s3-us-west-2.amazonaws.com/nano-chef-client/chef-12.14.60.appx
 
   - name: ubuntu1404
     driver_config:
@@ -34,42 +34,39 @@ platforms:
     transport:
       ssh_key: ~/.ssh/id_kitchen-azurerm
 
+  - name: debian7
+    driver_config:
+      image_urn: credativ:Debian:8:latest
+    transport:
+      ssh_key: ~/.ssh/id_kitchen-azurerm
+
+  - name: redhat7                                      
+    driver_config:                                           
+      image_urn: redhat:RHEL:7.2:latest
+    transport:
+      ssh_key: ~/.ssh/id_kitchen-azurerm
+
+  - name: centos
+    driver_config:                                           
+      image_urn: OpenLogic:Centos:7.1:latest       
+    transport:
+      ssh_key: ~/.ssh/id_kitchen-azurerm      
+      sudo: true
+
+  - name: oracle7
+    driver_config:
+      image_urn: Oracle:Oracle-Linux:7.2:latest
+    transport:
+      ssh_key: ~/.ssh/id_kitchen-azurerm
+
+# Does not work due to no Yum - needs separate platform?
+  - name: suse12
+    driver_config:
+      image_urn: SUSE:SLES:12-SP1:latest
+    transport:
+      ssh_key: ~/.ssh/id_kitchen-azurerm
+
 suites:
   - name: default
     run_list:
       - recipe[dsc_core::default]
-
-# # Libcurl issue
-#   - name: debian7
-#     driver_config:
-#       image_urn: credativ:Debian:8:latest
-#     transport:
-#       ssh_key: ~/.ssh/id_kitchen-azurerm
-
-# # Unable to load static compiled DLL correctly
-#   - name: redhat7                                      
-#     driver_config:                                           
-#       image_urn: redhat:RHEL:7.2:latest
-#     transport:
-#       ssh_key: ~/.ssh/id_kitchen-azurerm
-
-# # Unable to load static compiled DLL correctly
-#   - name: centos
-#     driver_config:                                           
-#       image_urn: OpenLogic:Centos:7.1:latest       
-#     transport:
-#       ssh_key: ~/.ssh/id_kitchen-azurerm      
-
-# # Untested
-#   - name: oracle7
-#     driver_config:
-#       image_urn: Oracle:Oracle-Linux:7.2:latest
-#     transport:
-#       ssh_key: ~/.ssh/id_kitchen-azurerm
-
-# # Untested
-#   - name: suse12
-#     driver_config:
-#       image_urn: SUSE:SLES:12-SP1:latest
-#     transport:
-#       ssh_key: ~/.ssh/id_kitchen-azurerm

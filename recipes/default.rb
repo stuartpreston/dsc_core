@@ -4,13 +4,19 @@
 #
 # Copyright (c) 2016 Stuart Preston, All Rights Reserved.
 
-case node.platform
+case node[:platform]
 when 'ubuntu', 'debian'
   include_recipe '::install_deb'
   include_recipe '::demo_dsc_nx'
 
-when 'centos', 'redhat', 'oracle', 'suse'
+when 'centos', 'redhat', 'oracle'
+  include_recipe '::kitchen_prerequisites'
   include_recipe '::install_rpm'
+  include_recipe '::demo_dsc_nx'
+
+when 'suse'
+  include_recipe '::kitchen_prerequisites'
+  include_recipe '::install_rpm_suse'
   include_recipe '::demo_dsc_nx'
 
 when 'windows'
